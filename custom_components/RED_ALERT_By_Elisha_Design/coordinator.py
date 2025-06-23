@@ -23,15 +23,31 @@ class RedAlertDataUpdateCoordinator(DataUpdateCoordinator):
         try:
             async with async_timeout.timeout(10):
                 async with self.session.get(OREF_ALERTS_URL) as resp:
-                    if resp.status != 200:
-                        raise UpdateFailed(f"Error fetching alerts: {resp.status}")
-                    data = await resp.json()
-                    # Filter alerts for the city
+                    text = await resp.text()
+                    if not text:
+                        _LOGGER.debug("RED ALERT: Empty response from alerts API, no alerts currently.")
+                        return []
+
+                    try:
+                        data = await resp.json()
+                    except Exception:
+                        _LOGGER.warning(f"RED ALERT: Failed to parse JSON from alerts API response: {text}")
+                        return []
+
+                    if not data:
+                        _LOGGER.debug("RED ALERT: Alerts API returned empty data.")
+                        return []
+
+                    alerts = data.get("alerts", [])
                     filtered_alerts = []
-                    for alert in data.get("alerts", []):
+
+                    # Filter alerts for the configured city (case insensitive)
+                    for alert in alerts:
                         cities = alert.get("cities", [])
-                        if any(self.city.lower() in city.lower() for city in cities):
+                        if any(self.city.lower() == city.lower() for city in cities):
                             filtered_alerts.append(alert)
+
                     return filtered_alerts
+
         except Exception as e:
-            raise UpdateFailed(f"Error updating alerts: {e}")
+            raise UpdateFailed(f"RED ALERT: Error updating alerts: {e}")
