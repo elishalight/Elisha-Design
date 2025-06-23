@@ -1,0 +1,10 @@
+{
+  "name": "RED ALERT By Elisha Design",
+  "content_in_root": false,
+  "domains": ["red_alert"],
+  "homeassistant": "2022.12.0",
+  "version": "1.0.0",
+  "iot_class": "cloud_polling",
+  "config_flow": true,
+  "zip_release": false
+}
