@@ -1,0 +1,18 @@
+name: Tel Mond Red Alert
+version: "1.0.0"
+slug: telmond_alerts
+description: Siren alerts + 'you may leave' detection for Tel Mond
+startup: application
+boot: auto
+init: false
+host_network: true
+ingress: false
+
+options:
+  license_code: ""
+
+schema:
+  license_code: str
+
+environment:
+  LICENSE_CODE: "!secret license_code"
