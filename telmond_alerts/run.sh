@@ -1,13 +1,12 @@
 #!/bin/bash
 
-echo "🔐 Checking license code..."
+CORRECT_PASS="codedesign"
 
-RESPONSE=$(curl -s -X POST https://auth.elishadesign.com/validate -d "code=${LICENSE_CODE}")
-
-if echo "$RESPONSE" | grep -q "VALID"; then
-    echo "✅ License valid. Starting Tel Mond alert integration..."
-    # Your real logic goes here
+if [ "$LICENSE_PASSCODE" == "$CORRECT_PASS" ]; then
+  echo "✅ Passcode correct. Running Tel Mond alert logic..."
+  # Add your logic here
+  sleep 999999  # Keeps the container alive
 else
-    echo "❌ Invalid license. Exiting."
-    exit 1
+  echo "❌ Incorrect passcode. Please contact Elisha Design."
+  exit 1
 fi
