@@ -16,7 +16,6 @@ class RedAlertStatusSensor(Entity):
         self.coordinator = coordinator
         self._attr_name = "RED ALERT"
         self._state = None
-        self._attributes = {}
 
     @property
     def name(self):
@@ -24,7 +23,6 @@ class RedAlertStatusSensor(Entity):
 
     @property
     def state(self):
-        # If any alert exists for city, UNSAFE else SAFE
         if self.coordinator.data:
             if len(self.coordinator.data) > 0:
                 return "UNSAFE"
@@ -55,10 +53,8 @@ class YouCanLeaveSensor(Entity):
 
     @property
     def is_on(self):
-        # Default on unless there is an alert message with a siren or unsafe warning
         if self.coordinator.data:
             for alert in self.coordinator.data:
-                # Check alert types or messages for siren/unsafe
                 msg = alert.get("message", "").lower()
                 if "siren" in msg or "unsafe" in msg or "אין לצאת" in msg:
                     return False
@@ -79,7 +75,6 @@ class EarlyAlertSensor(Entity):
 
     @property
     def is_on(self):
-        # On if there is an alert flagged as early alert
         if self.coordinator.data:
             for alert in self.coordinator.data:
                 if alert.get("typeName", "").lower() == "early alert":
