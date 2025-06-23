@@ -1,18 +1,17 @@
 name: Tel Mond Red Alert
 version: "1.0.0"
 slug: telmond_alerts
-description: Siren alerts + 'you may leave' detection for Tel Mond
+description: Paid add-on. Requires a license passcode from Elisha Design.
 startup: application
 boot: auto
 init: false
 host_network: true
-ingress: false
 
 options:
-  license_code: ""
+  license_passcode: ""
 
 schema:
-  license_code: str
+  license_passcode: str
 
 environment:
-  LICENSE_CODE: "!secret license_code"
+  LICENSE_PASSCODE: "!secret license_passcode"
